@@ -1,0 +1,22 @@
+@media (min-width: 426px) {
+	.icon-douban{
+		display: none;
+	}
+}
+@media (max-width: 425px) {
+	.site-navbar{
+		margin-left: -25px;
+	}
+	.icon-douban{
+		margin-left: -3px;
+	}
+	.word-douban{
+		display: none;
+	}
+	.input-group{
+		margin-left: -10px;
+	}
+	.site-search-button{
+		margin-left: -25px;
+	}
+}
