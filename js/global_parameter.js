@@ -19,15 +19,29 @@
         },
         Init: function () {
             this.option = (function (option) {
-                return option === '类别' ?  alert('请输选择类别！') : option;
+                return option === '类别' ?  alert('请选择查询类别！') : option;
             })($('#dropdown-button')[0].innerText.trim());
             if (!this.option) return;
             this.searchContent = (function (searchContent) {
-                return searchContent === null ? alert('请输选择内容！') : searchContent.join('');
+                return searchContent === null ? alert('请选择查询内容！') : searchContent.join('');
             })($('#site-search-content')[0].value.match(this.OpimizeSearchContentReg));
             if (!this.searchContent) return;
             this.optionUrl = query.CreateOptionUrl(this.option);
             return true;
+        },
+        ConcatItemsValueToString: function (items, attr) {
+            let result = '';
+            let itemsNumber = items.length;
+            if (typeof items[0] === 'string'){
+                for (let i = 0; i < itemsNumber; i++) {
+                    result += items[i] + ' / ';
+                }
+            } else if (typeof items[0] === 'object') {
+                for (let i = 0; i < itemsNumber; i++) {
+                    result += items[i][attr] + ' / ';
+                }
+            }
+            return result.substring(0, result.length - 3);
         },
         CreateOptionUrl: function (arg) {
             switch (arg) {
