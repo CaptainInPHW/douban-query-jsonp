@@ -92,7 +92,7 @@
                 musics[i].pubdate = json.musics[i].attrs.pubdate ? json.musics[i].attrs.pubdate[0] : query.notFound;
                 musics[i].pubnum = json.musics[i].attrs.discs ? json.musics[i].attrs.discs[0] : query.notFound;
                 musics[i].version = json.musics[i].attrs.version ? json.musics[i].attrs.version[0] : query.notFound;
-                musics[i].media = json.musics[i].attrs.media ? json.musics[i].attrs.media[0] || query.notFound;
+                musics[i].media = json.musics[i].attrs.media ? json.musics[i].attrs.media[0] : query.notFound;
                 musics[i].rating = json.musics[i].rating.average || query.notFound;
                 musics[i].url = json.musics[i].alt || query.notFound;
             }
