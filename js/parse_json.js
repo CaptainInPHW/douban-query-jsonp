@@ -88,11 +88,11 @@
                 musics[i].image = json.musics[i].image || query.notFound;
                 musics[i].title = json.musics[i].title || query.notFound;
                 musics[i].singer = query.ConcatItemsValueToString(json.musics[i].author, 'name') || query.notFound;
-                musics[i].publisher = json.musics[i].attrs.publisher[0] || query.notFound;
-                musics[i].pubdate = json.musics[i].attrs.pubdate[0] || query.notFound;
+                musics[i].publisher = json.musics[i].attrs.publisher ? json.musics[i].attrs.publisher[0] : query.notFound;
+                musics[i].pubdate = json.musics[i].attrs.pubdate ? json.musics[i].attrs.pubdate[0] : query.notFound;
                 musics[i].pubnum = json.musics[i].attrs.discs ? json.musics[i].attrs.discs[0] : query.notFound;
                 musics[i].version = json.musics[i].attrs.version ? json.musics[i].attrs.version[0] : query.notFound;
-                musics[i].media = json.musics[i].attrs.media[0] || query.notFound;
+                musics[i].media = json.musics[i].attrs.media ? json.musics[i].attrs.media[0] || query.notFound;
                 musics[i].rating = json.musics[i].rating.average || query.notFound;
                 musics[i].url = json.musics[i].alt || query.notFound;
             }
