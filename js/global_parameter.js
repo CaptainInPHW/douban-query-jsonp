@@ -58,7 +58,7 @@
             $(script).remove();
         },
         PlayLoadingAnimation: function () {
-            $('#site-homepage').removeClass('site-homepage-hide site-welcome').addClass('site-loading');
+            $('#site-homepage').removeClass('site-homepage-hide site-welcome site-not-found').addClass('site-loading');
         }
     };
 }();
