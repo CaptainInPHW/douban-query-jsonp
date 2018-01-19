@@ -46,7 +46,7 @@
         } else {
             $('#site-homepage').removeClass('site-loading').addClass('site-not-found');
             setTimeout(function (){
-                confirm('哎呀，没有找到呢，客官要不要去我的 GitHub 一探究竟呀？') ? window.open('https://github.com/CaptainInPHW/douban-query-jsonp') : window.location.reload();
+                confirm('哎呀，没有找到呢，客官要不要去我的 GitHub 一探究竟呀？') ? window.location.href = 'https://github.com/CaptainInPHW/douban-query-jsonp' : window.location.reload();
             },1000);
         }
     };
