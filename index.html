@@ -20,6 +20,7 @@
 <!-- 首页样式 + 全局数据加载动画 -->
 
 <section id="site-homepage" class="site-welcome"></section>
+<!--<section id="site-homepage" class="site-not-found"></section>-->
 
 <!-- 顶部导航搜索栏 -->
 
@@ -38,9 +39,9 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">类别
                             </button>
                             <div id="dropdown-menu" class="dropdown-menu">
-                                <a class="dropdown-item" href="#">图书</a>
-                                <a class="dropdown-item" href="#">电影</a>
-                                <a class="dropdown-item" href="#">音乐</a>
+                                <a class="dropdown-item" href="javascript:void(0);">图书</a>
+                                <a class="dropdown-item" href="javascript:void(0);">电影</a>
+                                <a class="dropdown-item" href="javascript:void(0);">音乐</a>
                             </div>
                         </div>
                         <input type="text" id="site-search-content" class="form-control"
@@ -59,24 +60,13 @@
 
 <section class="site-content">
     <div class="container">
-
-        <!-- 主要区域，该区域为 MVC 模式中的 View -->
-
-        <div id="book-show-area" class="row">
-            <!-- book 1 -->
-            <!-- book 2 -->
-            <!-- book 3 -->
-            <!-- book 4 -->
-            <!-- book 5 -->
-            <!-- book 6 -->
-            <!-- book 7 -->
-            <!-- book 8 -->
-            <!-- book 9 -->
-        </div>
+        <!-- Start: 数据展示区开始 -->
+        <div id="show-data-area" class="row"></div>
+        <!-- End: 数据展示区结束 -->
     </div>
 </section>
 
-<!-- 顶部翻页按钮 -->
+<!-- 底部翻页按钮 -->
 
 <section class="site-bottom-nav">
     <div class="container">
