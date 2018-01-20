@@ -42,7 +42,6 @@
             }
             $showBooksAreaImages.css('background-size','contain');
             $('#site-homepage').addClass('site-homepage-hide');
-            console.timeEnd('时间');
         } else {
             $('#site-homepage').removeClass('site-loading').addClass('site-not-found');
             setTimeout(function (){
@@ -89,7 +88,6 @@
         }
         $showBooksAreaImages.css('background-size','contain');
         $('#site-homepage').addClass('site-homepage-hide');
-        console.timeEnd('时间');
     };
 
 
@@ -130,6 +128,5 @@
         }
         $showBooksAreaImages.css('background-size','contain');
         $('#site-homepage').addClass('site-homepage-hide');
-        console.timeEnd('时间');
     }
 }();
