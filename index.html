@@ -34,10 +34,10 @@
                 <div class="col-10 col-md-9">
                     <div class="input-group">
                         <div class="input-group-append">
-                            <button id="dropdown-button" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            <button id="site-dropdown-button" class="btn btn-outline-secondary dropdown-toggle" type="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">类别
                             </button>
-                            <div id="dropdown-menu" class="dropdown-menu">
+                            <div class="dropdown-menu">
                                 <a class="dropdown-item" href="javascript:void(0);">图书</a>
                                 <a class="dropdown-item" href="javascript:void(0);">电影</a>
                                 <a class="dropdown-item" href="javascript:void(0);">音乐</a>
@@ -87,10 +87,11 @@
 <!-- 底部版权展示 -->
 
 <section class="site-copyright">
-    <p><a href="https://github.com/CaptainInPHW/douban-query-jsonp" target="_blank">github.com/CaptainInPHW.</a>&nbsp;All&nbsp;Rights&nbsp;Reserved.
-    </p>
-    <p>&copy;<span>&nbsp;CopyRight&nbsp;</span><span id="current-year"></span>-<span id="next-year"></span></p>
+    <p><a href="https://github.com/CaptainInPHW/douban-query-jsonp" target="_blank">github.com/CaptainInPHW.</a>&nbsp;All&nbsp;Rights&nbsp;Reserved.</p>
+    <p>&copy;<span>&nbsp;CopyRight&nbsp;</span>2018-2019</p>
 </section>
+
+<!-- 插件库 -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
@@ -100,8 +101,17 @@
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
 <script src="//at.alicdn.com/t/font_460116_f6wrr607kua0pb9.js"></script>
-<script src="js/global_parameter.js"></script>
-<script src="js/parse_json.js"></script>
+
+<!-- Model -->
+
+<!--<script src="js/global_parameter.js"></script>-->
+<!--<script src="js/parse_json.js"></script>-->
+<script src="js/View.js"></script>
+<script src="js/Model.js"></script>
+<script src="js/Controller.js"></script>
+<script src="js/request_model.js"></script>
+<script src="js/response_model.js"></script>
 <script src="js/main.js"></script>
+
 </body>
 </html>
