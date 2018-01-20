@@ -1,20 +1,20 @@
 !function () {
     let view = View({
         showArea: $('#show-data-area'),
-        images: $('.image'),
-        renderData: function (showArea) {
+        init: function () {
+            view.images = $('.image');
+        },
+        renderData: function () {
             let itemNumber = model.doubanData.books[model.searchContent].length;
-            if (itemNumber !== 0){
-                showArea.empty();
+                this.showArea.empty();
+                if (itemNumber !== 0){
+                model.initTemplete(itemNumber);
                 for (let i = 0; i < itemNumber; i++) {
-                    let booksTemplete = `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${model.doubanData.books[model.searchContent][i].url} class="title">${model.doubanData.books[model.searchContent][i].title}</a></li><li class="list-group-item author">作者：<span class="author-name">${model.doubanData.books[model.searchContent][i].author}</span></li><li class="list-group-item publisher">出版社：<span class="publisher-name">${model.doubanData.books[model.searchContent][i].publisher}</span></li><li class="list-group-item pubdate">出版年月：<span class="date">${model.doubanData.books[model.searchContent][i].pubdate}</span></li><li class="list-group-item price">定价：<span class="currency-icon">￥</span><span class="price-number">${model.doubanData.books[model.searchContent][i].price}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${model.doubanData.books[model.searchContent][i].rating}</span></li><li class="list-group-item ISBN">ISBN：<span class="ISBN-number">${model.doubanData.books[model.searchContent][i].ISBN}</span></li></ul></div></div></div>`;
-                    showArea.append(booksTemplete);
+                    this.showArea.append(model.templete.books[i]);
                 }
-                console.log(this.images);
-                console.log($('.image'));
-                let imagesNumber = this.images.length;
-                for (let i = 0; i < imagesNumber; i++) {
-                    this.images[i].css('background', `url("${model.doubanData.books[model.searchContent][i].image}") center center no-repeat`);
+                this.init();
+                for (let i = 0; i < itemNumber; i++) {
+                    $(this.images[i]).css(model.propertyName.bg, `url("${model.doubanData.books[model.searchContent][i].image}") center center no-repeat`);
                 }
                 this.images.css(model.propertyName.bgSize, model.propertyValue.bgSize);
                 this.homepage.addClass(model.className.hide);
@@ -51,9 +51,19 @@
             movies: {},
             musics: {}
         },
+        templete: {
+            books: [],
+            movies: [],
+            musics: []
+        },
         initModel: function () {
             this.getOption(view);
             this.getSearchContent(view);
+        },
+        initTemplete: function (number) {
+            for (let i = 0; i < number; i++) {
+                this.templete.books[i] = `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${model.doubanData.books[model.searchContent][i].url} class="title">${model.doubanData.books[model.searchContent][i].title}</a></li><li class="list-group-item author">作者：<span class="author-name">${model.doubanData.books[model.searchContent][i].author}</span></li><li class="list-group-item publisher">出版社：<span class="publisher-name">${model.doubanData.books[model.searchContent][i].publisher}</span></li><li class="list-group-item pubdate">出版年月：<span class="date">${model.doubanData.books[model.searchContent][i].pubdate}</span></li><li class="list-group-item price">定价：<span class="currency-icon">￥</span><span class="price-number">${model.doubanData.books[model.searchContent][i].price}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${model.doubanData.books[model.searchContent][i].rating}</span></li><li class="list-group-item ISBN">ISBN：<span class="ISBN-number">${model.doubanData.books[model.searchContent][i].ISBN}</span></li></ul></div></div></div>`;
+            }
         },
         ConcatItemsValueToString: function (items, attr) {
             let result = '';
@@ -93,7 +103,7 @@
                     model.doubanData.books[model.searchContent] = books;
                     console.log(model.doubanData);
                 }
-                view.renderData(view.showArea);
+                view.renderData();
             };
         }
     });
