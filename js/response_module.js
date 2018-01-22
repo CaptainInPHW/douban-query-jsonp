@@ -5,64 +5,148 @@
             view.images = $('.image');
         },
         renderData: function () {
-            let itemNumber = model.doubanData.books[model.searchContent].length;
-                this.showArea.empty();
-                if (itemNumber !== 0){
-                model.initTemplete(itemNumber);
-                for (let i = 0; i < itemNumber; i++) {
-                    this.showArea.append(model.templete.books[i]);
-                }
-                this.init();
-                for (let i = 0; i < itemNumber; i++) {
-                    $(this.images[i]).css(model.propertyName.bg, `url("${model.doubanData.books[model.searchContent][i].image}") center center no-repeat`);
-                }
-                this.images.css(model.propertyName.bgSize, model.propertyValue.bgSize);
-                this.homepage.addClass(model.className.hide);
+            if (!model.data.total){
+                this.render404Page();
+            } else if (!model.data.count) {
+                this.renderTheLastPage();
             } else {
-                this.homepage.removeClass(model.className.loading).addClass(model.className.notFound);
-                setTimeout(function (){
-                    confirm(model.jumpToGithub) ? window.location.href = model.githubSite : window.location.reload();
-                },1000);
+                this.showArea.empty();
+                this.renderHTML(model.data.count);
+                this.renderBackground(model.data.count);
             }
+        },
+        renderHTML: function (number) {
+            switch (model.option) {
+                case 'books': model.initBooksTemplete(number); break;
+                case 'movies': model.initMoviesTemplete(number); break;
+                case 'musics': model.initMusicsTemplete(number); break;
+            }
+            for (let i = 0; i < number; i++) {
+                this.showArea.append(model.templete[model.option][i]);
+            }
+        },
+        renderBackground: function (number) {
+            this.init();
+            for (let i = 0; i < number; i++) {
+                $(this.images[i]).css(model.propertyName.bg, model.propertyValue.bg[i]);
+            }
+            this.images.css(model.propertyName.bgSize, model.propertyValue.bgSize);
+            this.homepage.addClass(model.className.hide);
+        },
+        renderTheLastPage: function () {
+            alert(model.theLastPage);
+        },
+        render404Page: function () {
+            this.homepage.removeClass(model.className.loading).addClass(model.className.notFound);
+            setTimeout(function (){
+                confirm(model.jumpToGithub) ? window.location.href = model.githubSite : window.location.reload();
+            },1000);
         }
     });
     let model = Model({
-        // booksTemplete: `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${model.doubanData.books[this.searchContent][i].url} class="title">${this.doubanData.books[this.searchContent][i].title}</a></li><li class="list-group-item author">作者：<span class="author-name">${this.doubanData.books[this.searchContent][i].author}</span></li><li class="list-group-item publisher">出版社：<span class="publisher-name">${this.doubanData.books[this.searchContent][i].publisher}</span></li><li class="list-group-item pubdate">出版年月：<span class="date">${this.doubanData.books[this.searchContent][i].pubdate}</span></li><li class="list-group-item price">定价：<span class="currency-icon">￥</span><span class="price-number">${this.doubanData.books[this.searchContent][i].price}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${this.doubanData.books[this.searchContent][i].rating}</span></li><li class="list-group-item ISBN">ISBN：<span class="ISBN-number">${this.doubanData.books[this.searchContent][i].ISBN}</span></li></ul></div></div></div>`,
-        // moviesTemplete: `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${this.doubanData.movies[this.searchContent][i].url} class="title">${this.doubanData.movies[this.searchContent][i].title}</a></li><li class="list-group-item director">导演：<a href=${this.doubanData.movies[this.searchContent][i].directorUrl} class="director-name">${this.doubanData.movies[this.searchContent][i].director}</span></li><li class="list-group-item cast">主演：<span class="cast-name">${this.doubanData.movies[this.searchContent][i].cast}</span></li><li class="list-group-item pubdate">上映时间：<span class="date">${this.doubanData.movies[this.searchContent][i].pubdate}</span></li><li class="list-group-item genre">类型：<span class="genre-name">${this.doubanData.movies[this.searchContent][i].genre}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${this.doubanData.musics[this.searchContent][i].rating}</span></li></ul></div></div></div>`,
-        // musicsTemplete: `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${this.doubanData.musics[this.searchContent][i].url} class="title">${this.doubanData.musics[this.searchContent][i].title}</a></li><li class="list-group-item singer">歌手：<span class="singer-name">${this.doubanData.musics[this.searchContent][i].singer}</span></li><li class="list-group-item publisher">出版商：<span class="publisher-name">${this.doubanData.musics[this.searchContent][i].publisher}</span></li><li class="list-group-item pubdate">发行时间：<span class="date">${this.doubanData.musics[this.searchContent][i].pubdate}</span></li><li class="list-group-item version">专辑类型：<span class="version-type">${this.doubanData.musics[this.searchContent][i].version}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${this.doubanData.musics[this.searchContent][i].rating}</span></li></ul></div></div></div>`,
-        githubSite: 'https://github.com/CaptainInPHW/douban-query-jsonp',
+        githubSite: 'https://github.com/CaptainInPHW/douban-query-jsonp/',
         jumpToGithub: '哎呀，没有找到呢，客官要不要去我的 GitHub 一探究竟呀？',
+        theLastPage: '客官，您翻到最后一页了，真厉害呢！',
         notFound: '暂无',
         className: {
             loading: 'site-loading',
-            hide: 'site-homepage-hide',
-            notFound: 'site-not-found'
+            notFound: 'site-not-found',
+            hide: 'site-homepage-hide'
         },
         propertyName: {
             bg: 'background',
             bgSize: 'background-size'
         },
         propertyValue: {
-            // bg: `url("${model.doubanData.books[model.searchContent][i].image}") center center no-repeat`,
+            bg: [],
             bgSize: 'contain',
         },
-        doubanData: {
-            books: {},
-            movies: {},
-            musics: {}
+        data: {
+            total: 0,
+            count: undefined,
+            content: []
         },
         templete: {
             books: [],
             movies: [],
             musics: []
         },
-        initModel: function () {
+        init: function (json) {
             this.getOption(view);
             this.getSearchContent(view);
+            this.data.total = json.total;
         },
-        initTemplete: function (number) {
+        initBooksTemplete: function (number) {
             for (let i = 0; i < number; i++) {
-                this.templete.books[i] = `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${model.doubanData.books[model.searchContent][i].url} class="title">${model.doubanData.books[model.searchContent][i].title}</a></li><li class="list-group-item author">作者：<span class="author-name">${model.doubanData.books[model.searchContent][i].author}</span></li><li class="list-group-item publisher">出版社：<span class="publisher-name">${model.doubanData.books[model.searchContent][i].publisher}</span></li><li class="list-group-item pubdate">出版年月：<span class="date">${model.doubanData.books[model.searchContent][i].pubdate}</span></li><li class="list-group-item price">定价：<span class="currency-icon">￥</span><span class="price-number">${model.doubanData.books[model.searchContent][i].price}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${model.doubanData.books[model.searchContent][i].rating}</span></li><li class="list-group-item ISBN">ISBN：<span class="ISBN-number">${model.doubanData.books[model.searchContent][i].ISBN}</span></li></ul></div></div></div>`;
+                this.templete.books[i] = `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${model.data.content[i].url} class="title">${model.data.content[i].title}</a></li><li class="list-group-item author">作者：<span class="author-name">${model.data.content[i].author}</span></li><li class="list-group-item publisher">出版社：<span class="publisher-name">${model.data.content[i].publisher}</span></li><li class="list-group-item pubdate">出版年月：<span class="date">${model.data.content[i].pubdate}</span></li><li class="list-group-item price">定价：<span class="currency-icon">￥</span><span class="price-number">${model.data.content[i].price}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${model.data.content[i].rating}</span></li><li class="list-group-item ISBN">ISBN：<span class="ISBN-number">${model.data.content[i].ISBN}</span></li></ul></div></div></div>`;
+            }
+        },
+        initMoviesTemplete: function (number) {
+            for (let i = 0; i < number; i++) {
+                this.templete.movies[i] = `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${model.data.content[i].url} class="title">${model.data.content[i].title}</a></li><li class="list-group-item director">导演：<a href=${model.data.content[i].directorUrl} class="director-name">${model.data.content[i].director}</a></li><li class="list-group-item cast">主演：<span class="cast-name">${model.data.content[i].cast}</span></li><li class="list-group-item pubdate">上映时间：<span class="date">${model.data.content[i].pubdate}</span></li><li class="list-group-item genre">类型：<span class="genre-name">${model.data.content[i].genre}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${model.data.content[i].rating}</span></li></ul></div></div></div>`;
+            }
+        },
+        initMusicsTemplete: function (number) {
+            for (let i = 0; i < number; i++) {
+                this.templete.musics[i] = `<div class="col-12 col-md-6 item"><div class="row"><div class="col-4 col-md-3 image"></div><div class="col-8 col-md-9"><ul class="list-group"><li class="list-group-item"><a href=${model.data.content[i].url} class="title">${model.data.content[i].title}</a></li><li class="list-group-item singer">歌手：<span class="singer-name">${model.data.content[i].singer}</span></li><li class="list-group-item publisher">出版商：<span class="publisher-name">${model.data.content[i].publisher}</span></li><li class="list-group-item pubdate">发行时间：<span class="date">${model.data.content[i].pubdate}</span></li><li class="list-group-item version">专辑类型：<span class="version-type">${model.data.content[i].version}</span></li><li class="list-group-item rating">评分：<span class="average-rating">${model.data.content[i].rating}</span></li></ul></div></div></div>`;
+            }
+        },
+        initParseBooksJSON: function () {
+            window.ParseBooksJSON = function (json) {
+                model.init(json);
+                model.data.count = json.books.length;
+                for (let i = 0; i < model.data.count; i++) {
+                    model.data.content[i] = {};
+                    model.data.content[i].title = json.books[i].title || model.notFound;
+                    model.data.content[i].author = model.ConcatItemsValueToString(json.books[i].author) || model.notFound;
+                    model.data.content[i].publisher = json.books[i].publisher || model.notFound;
+                    model.data.content[i].pubdate = json.books[i].pubdate || model.notFound;
+                    model.data.content[i].price = json.books[i].price || model.notFound;
+                    model.data.content[i].rating = json.books[i].rating.average || model.notFound;
+                    model.data.content[i].ISBN = json.books[i].isbn13 || model.notFound;
+                    model.data.content[i].url = json.books[i].alt || model.notFound;
+                    model.propertyValue.bg[i] = `url("${json.books[i].images.large || model.notFound}") center center no-repeat`;
+                }
+                view.renderData();
+            };
+        },
+        initParseMoviesJSON: function () {
+            window.ParseMoviesJSON = function (json) {
+                model.init(json);
+                model.data.count = json.subjects.length;
+                for (let i = 0; i < model.data.count; i++) {
+                    model.data.content[i] = {};
+                    model.data.content[i].title = json.subjects[i].title || model.notFound;
+                    model.data.content[i].director = model.ConcatItemsValueToString(json.subjects[i].directors, 'name') || model.notFound;
+                    model.data.content[i].directorUrl = model.ConcatItemsValueToString(json.subjects[i].directors, 'alt') || model.notFound;
+                    model.data.content[i].cast = model.ConcatItemsValueToString(json.subjects[i].casts, 'name') || model.notFound;
+                    model.data.content[i].pubdate = json.subjects[i].year || model.notFound;
+                    model.data.content[i].rating = json.subjects[i].rating.average || model.notFound;
+                    model.data.content[i].url = json.subjects[i].alt || model.notFound;
+                    model.data.content[i].genre = model.ConcatItemsValueToString(json.subjects[i].genres) || model.notFound;
+                    model.propertyValue.bg[i] = `url("${json.subjects[i].images.large || model.notFound}") center center no-repeat`;
+                }
+                view.renderData();
+            }
+        },
+        initParseMusicsJSON: function () {
+            window.ParseMusicsJSON = function (json) {
+                model.init(json);
+                model.data.count = json.musics.length;
+                for (let i = 0; i < model.data.count; i++) {
+                    model.data.content[i] = {};
+                    model.data.content[i].title = json.musics[i].title || model.notFound;
+                    model.data.content[i].singer = json.musics[i].author ? model.ConcatItemsValueToString(json.musics[i].author, 'name') : model.notFound;
+                    model.data.content[i].publisher = json.musics[i].attrs.publisher ? json.musics[i].attrs.publisher[0] : model.notFound;
+                    model.data.content[i].pubdate = json.musics[i].attrs.pubdate ? json.musics[i].attrs.pubdate[0] : model.notFound;
+                    model.data.content[i].pubnum = json.musics[i].attrs.discs ? json.musics[i].attrs.discs[0] : model.notFound;
+                    model.data.content[i].version = json.musics[i].attrs.version ? json.musics[i].attrs.version[0] : model.notFound;
+                    model.data.content[i].media = json.musics[i].attrs.media ? json.musics[i].attrs.media[0] : model.notFound;
+                    model.data.content[i].rating = json.musics[i].rating.average || model.notFound;
+                    model.data.content[i].url = json.musics[i].alt || model.notFound;
+                    model.propertyValue.bg[i] = `url("${json.musics[i].image || model.notFound}") center center no-repeat`;
+                }
+                view.renderData();
             }
         },
         ConcatItemsValueToString: function (items, attr) {
@@ -82,29 +166,9 @@
     });
     let controller = Controller({
         init: function () {
-            window.ParseBooksJSON = function (json) {
-                model.initModel();
-                if (!(model.searchContent in model.doubanData.books)) {
-                    let books = [];
-                    books.length = json.books.length;
-                    for (let i = 0; i < books.length; i++) {
-                        books[i] = {};
-                        books[i].image = json.books[i].images.large || model.notFound;
-                        books[i].title = json.books[i].title || model.notFound;
-                        books[i].author = model.ConcatItemsValueToString(json.books[i].author) || model.notFound;
-                        books[i].publisher = json.books[i].publisher || model.notFound;
-                        books[i].pubdate = json.books[i].pubdate || model.notFound;
-                        books[i].price = json.books[i].price || model.notFound;
-                        books[i].rating = json.books[i].rating.average || model.notFound;
-                        books[i].ISBN = json.books[i].isbn13 || model.notFound;
-                        books[i].url = json.books[i].alt || model.notFound;
-                    }
-                    // use push
-                    model.doubanData.books[model.searchContent] = books;
-                    console.log(model.doubanData);
-                }
-                view.renderData();
-            };
+            model.initParseBooksJSON();
+            model.initParseMoviesJSON();
+            model.initParseMusicsJSON();
         }
     });
     controller.init();
