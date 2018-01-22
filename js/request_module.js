@@ -1,50 +1,84 @@
 !function () {
     let view = View({
         body: $('body'),
-        searchButton: $('#site-search-button')
+        optionButton: $('.dropdown-item'),
+        searchButton: $('#site-search-button'),
+        prevPageButton: $('#prev-page'),
+        nextPageButton: $('#next-page'),
+        renderTheFirstPage: function () {
+            alert(model.theFirstPage);
+        },
+        playLoadingAnimation: function (view) {
+            view.removeClass(model.className.hide, model.className.welcome, model.className.notFound).addClass(model.className.loading);
+        }
     });
     let model = Model({
-        baseUrl: 'https://api.douban.com/v2/',
+        start: 0,
+        flipPage: '&start=',
+        theFirstPage: '客官，已经是第一页了！',
         searchBooks: 'book/search?q=',
         searchMovies: 'movie/search?q=',
         searchMusics: 'music/search?q=',
+        baseUrl: 'https://api.douban.com/v2/',
         booksCallback: '&callback=ParseBooksJSON',
         moviesCallback: '&callback=ParseMoviesJSON',
         musicsCallback: '&callback=ParseMusicsJSON',
         className: {
-            hide: 'site-homepage-hide',
             welcome: 'site-welcome',
+            loading: 'site-loading',
             notFound: 'site-not-found',
-            loading: 'site-loading'
+            hide: 'site-homepage-hide'
         },
         init: function (option) {
             switch (option) {
-                case '图书': return [this.searchBooks, this.booksCallback];
-                case '电影': return [this.searchMovies, this.moviesCallback];
-                case '音乐': return [this.searchMusics, this.musicsCallback];
+                case 'books': return [this.searchBooks, this.booksCallback];
+                case 'movies': return [this.searchMovies, this.moviesCallback];
+                case 'musics': return [this.searchMusics, this.musicsCallback];
             }
         },
-        SendRequest: function (body) {
+        SendRequest: function () {
+            if (!this.getOption(view)) return;
+            if (!this.getSearchContent(view)) return;
+            this.optionUrl = this.init(this.option);
+            view.playLoadingAnimation(view.homepage);
             let script = document.createElement('script');
-            $(script).attr('src', this.baseUrl + this.optionUrl[0] + this.searchContent + this.optionUrl[1]);
-            body.append(script);
+            $(script).attr('src', this.baseUrl + this.optionUrl[0] + this.searchContent + this.flipPage + this.start + this.optionUrl[1]);
+            view.body.append(script);
             $(script).remove();
-        },
-        playLoadingAnimation: function (view) {
-            view.removeClass(this.className.hide, this.className.welcome, this.className.notFound).addClass(this.className.loading);
         }
     });
     let controller = Controller({
         init: function () {
-            controller.clickSearchButton(view.searchButton, view.body);
+            this.optionButton();
+            this.searchButton();
+            this.prevPageButton();
+            this.nextPageButton();
         },
-        clickSearchButton: function (searchButton, body) {
-            searchButton.on('click',function () {
-                if (!model.getOption(view)) return;
-                if (!model.getSearchContent(view)) return;
-                model.optionUrl = model.init(model.option);
-                model.playLoadingAnimation(view.homepage);
-                model.SendRequest(body);
+        optionButton: function () {
+            view.optionButton.on('click', function (event) {
+                $('#site-dropdown-button')[0].innerText = event.currentTarget.innerText;
+            })
+        },
+        searchButton: function () {
+            view.searchButton.on('click',function () {
+                model.SendRequest();
+            });
+        },
+        prevPageButton: function () {
+            view.prevPageButton.on('click', function () {
+                console.log('123');
+                if (model.start === 0) {
+                    view.renderTheFirstPage();
+                } else {
+                    model.start -= 10;
+                    model.SendRequest();
+                }
+            });
+        },
+        nextPageButton: function () {
+            view.nextPageButton.on('click', function () {
+                model.start += 10;
+                model.SendRequest();
             });
         }
     });
