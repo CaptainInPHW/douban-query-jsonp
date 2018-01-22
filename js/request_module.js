@@ -61,6 +61,7 @@
         },
         searchButton: function () {
             view.searchButton.on('click',function () {
+                model.start = 0;
                 model.SendRequest();
             });
         },
