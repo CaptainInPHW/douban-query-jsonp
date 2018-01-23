@@ -50,6 +50,7 @@
     let controller = Controller({
         init: function () {
             this.optionButton();
+            this.enterSendRequest();
             this.searchButton();
             this.prevPageButton();
             this.nextPageButton();
@@ -57,6 +58,14 @@
         optionButton: function () {
             view.optionButton.on('click', function (event) {
                 $('#site-dropdown-button')[0].innerText = event.currentTarget.innerText;
+            })
+        },
+        enterSendRequest: function () {
+            $(view.content).on('keydown', function (event) {
+                if (event.keyCode === 13) {
+                    model.start = 0;
+                    model.SendRequest();
+                }
             })
         },
         searchButton: function () {
