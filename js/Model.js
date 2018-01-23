@@ -5,9 +5,7 @@
             searchContent: undefined,
             OpimizeSearchContentReg: new RegExp(/[a-zA-Z0-9\u4e00-\u9fa5]+/,'g'),
             getOption: function (view) {
-                let option = (function (option) {
-                    return option === '类别' ?  alert('请选择查询类别！') : option;
-                })(view.option.innerText.trim());
+                let option = view.option.innerText.trim();
                 switch (option) {
                     case '图书': this.option = 'books'; break;
                     case '电影': this.option = 'movies'; break;
