@@ -1,3 +1,7 @@
+⚠️ This project is for practice, no longer maintained. ⚠️
+
+---
+
 ![豆瓣查询首页.jpg](https://i.loli.net/2018/01/22/5a65f26e88dda.jpg)
 
 ### 豆瓣查询
